@@ -1,9 +1,10 @@
 # koofr-watch
 
-[koofr-watch][koofr-watch] observes your Koofr storage / activities and emits changes to webhooks or similar making the
-integration with other services and processes easier.
+[koofr-watch][koofr-watch] observes your [Koofr](https://koofr.eu/) storage/activities and emits changes to webhooks or similar, making the integration with other services and processes easier.
 
-This product is not associated with Koofr organisation and was build by reverse-engineering [java-koofr] Java SDK.
+This product is not associated with the Koofr organisation and was built by reverse-engineering [java-koofr] Java SDK.
+
+Koofr [API Documentation is here](https://stage.koofr.net/developers/api).
 
 ## Development
 
