@@ -1,6 +1,8 @@
 { pkgs, lib, config, inputs, ... }:
 
 {
+  env.PORT = "4443";
+
   packages = [
   	pkgs.jq
 	pkgs.jnv
