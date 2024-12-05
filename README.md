@@ -7,7 +7,8 @@ Koofr [API Documentation is here](https://stage.koofr.net/developers/api).
 
 ## Running with Docker
 
-```bash
+```sh
+docker pull ghcr.io/otobrglez/koofr-watch:latest
 docker run -ti --rm \
   -e PORT=4444 \
   -e KOOFR_USERNAME=$KOOFR_USERNAME \
