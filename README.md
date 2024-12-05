@@ -3,7 +3,6 @@
 [koofr-watch][koofr-watch] observes your [Koofr](https://koofr.eu/) storage/activities and emits changes to webhooks
 making the integration with other services and processes a breeze!
 
-This product is not associated with the Koofr organisation and was built by reverse-engineering [java-koofr] Java SDK.
 
 Koofr [API Documentation is here](https://stage.koofr.net/developers/api).
 
@@ -30,3 +29,5 @@ sbt run
 [koofr-watch]: https://github.com/otobrglez/koofr-watch
 
 [java-koofr]: https://github.com/koofr/java-koofr
+
+P.s.: This product is not associated with the Koofr organisation and was built by reverse-engineering [java-koofr] Java SDK.
