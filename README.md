@@ -5,7 +5,7 @@ making the integration with other services and processes a breeze!
 
 Koofr [API Documentation is here](https://stage.koofr.net/developers/api).
 
-## Running with Docker
+## Running with Docker 🐬
 
 ```sh
 docker pull ghcr.io/otobrglez/koofr-watch:latest
