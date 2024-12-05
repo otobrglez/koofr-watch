@@ -1,27 +1,21 @@
 package com.pinkstack.koofr.watch
 
 import com.pinkstack.koofr.watch.koofr.*
-import io.circe.Json
 import zio.*
-import zio.Console.printLine
 import zio.http.*
+import zio.logging.backend.SLF4J
 import zio.stream.ZStream
 
 object Main extends ZIOAppDefault:
-  // override val bootstrap = Runtime.removeDefaultLoggers >>> SLF4J.slf4j
+  override val bootstrap = Runtime.removeDefaultLoggers >>> SLF4J.slf4j
 
-  private def printJson(json: Json): Task[Unit] = zio.Console.printLine(json.toString())
-
-  def run = (for
-    koofr <- ZIO.service[KoofrService]
-    // _     <- ZIO.fail(new RuntimeException("Not implemented"))
-
+  private def program = for
+    koofr    <- ZIO.service[KoofrService]
     webhooks <- ZIO.service[Webhooks]
-    stream   <- ZStream
-                  .serviceWithStream[ActivitiesOf](_.stream)
-                  .mapZIO(webhooks.activitySink)
-                  .runDrain
-  yield ()).provide(
+    _        <- ZStream.serviceWithStream[ActivitiesOf](_.stream).mapZIO(webhooks.activitySink).runDrain
+  yield ()
+
+  def run = program.provide(
     Scope.default,
     WatchConfig.layer,
     KoofrService.layer,

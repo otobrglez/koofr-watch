@@ -13,7 +13,7 @@
         <OnMatch>DENY</OnMatch>
     </turboFilter>
 
-    <logger name="com.pinkstack.koofr.watch" level="INFO"/>
+    <logger name="com.pinkstack.koofr.watch.koofr" level="INFO"/>
     <logger name="io.netty" level="INFO"/>
 
     <root level="${APP_LOG_LEVEL:-INFO}">

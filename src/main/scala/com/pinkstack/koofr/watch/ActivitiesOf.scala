@@ -33,6 +33,4 @@ final case class ActivitiesOf private (
       .flatMap(ZStream.fromIterable)
 
 object ActivitiesOf:
-  def layer: ZLayer[WatchConfig & KoofrService, Nothing, ActivitiesOf] = ZLayer.scoped:
-    for koofr <- ZIO.service[KoofrService]
-    yield ActivitiesOf(koofr)
+  def layer = ZLayer.derive[ActivitiesOf]
