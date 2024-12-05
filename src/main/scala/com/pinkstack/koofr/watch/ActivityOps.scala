@@ -17,14 +17,16 @@ object ActivityOps:
             FileMoved,
             _,
             _,
-            mountName,
             mountId,
+            mountName,
             _,
             Some(newPath),
             newMountId,
             Some(newMountName),
             User(_, Some(name), _, _, _),
             Some(path),
+            _,
+            _,
             _
           ) if mountName == newMountName =>
         s"${who(a)} moved: ($mountName) '$path' to '$newPath'"
@@ -32,14 +34,16 @@ object ActivityOps:
             FileMoved,
             _,
             _,
-            mountName,
             mountId,
+            mountName,
             _,
             Some(newPath),
             newMountId,
             Some(newMountName),
             User(_, Some(name), _, _, _),
             Some(path),
+            _,
+            _,
             _
           ) =>
         s"${who(a)} moved: ($mountName) '$path' to ($newMountName) '$newPath'"
@@ -47,14 +51,16 @@ object ActivityOps:
             FileUploaded,
             _,
             _,
-            mountName,
             mountId,
+            mountName,
             _,
             _,
             _,
             _,
             User(_, Some(name), _, _, _),
             Some(path),
+            _,
+            _,
             _
           ) =>
         s"${who(a)} uploaded: ($mountName) '$path'"
@@ -62,14 +68,16 @@ object ActivityOps:
             FileDeleted,
             _,
             _,
-            mountName,
             mountId,
+            mountName,
             _,
             _,
             _,
             _,
             User(_, Some(name), _, _, _),
             Some(path),
+            _,
+            _,
             _
           ) =>
         s"${who(a)} deleted: ($mountName) '$path'"

@@ -36,8 +36,11 @@ lazy val root = project
       "-java-output-version",
       "21"
     ),
-    libraryDependencies ++= Seq("org.scalameta" %% "munit" % "1.0.2" % Test) ++
+    libraryDependencies ++=
       Dependencies.zio ++ Dependencies.refined ++ Dependencies.circe ++ Dependencies.logging
+  )
+  .settings(
+    testFrameworks += new TestFramework("zio.test.sbt.ZTestFramework")
   )
   .settings(
     Compile / mainClass              := Some("com.pinkstack.koofr.watch.Main"),

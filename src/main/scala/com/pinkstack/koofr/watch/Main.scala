@@ -5,20 +5,27 @@ import io.circe.Json
 import zio.*
 import zio.Console.printLine
 import zio.http.*
-import zio.logging.backend.SLF4J
+import zio.stream.ZStream
 
 object Main extends ZIOAppDefault:
-  import ActivityOps.*
-  override val bootstrap = Runtime.removeDefaultLoggers >>> SLF4J.slf4j
+  // override val bootstrap = Runtime.removeDefaultLoggers >>> SLF4J.slf4j
 
   private def printJson(json: Json): Task[Unit] = zio.Console.printLine(json.toString())
 
   def run = (for
-    koofr      <- ZIO.service[KoofrClient]
-    activities <- koofr.activities()
-    _          <- printLine(activities.map(_.print).mkString("\n"))
+    koofr <- ZIO.service[KoofrService]
+    // _     <- ZIO.fail(new RuntimeException("Not implemented"))
+
+    webhooks <- ZIO.service[Webhooks]
+    stream   <- ZStream
+                  .serviceWithStream[ActivitiesOf](_.stream)
+                  .mapZIO(webhooks.activitySink)
+                  .runDrain
   yield ()).provide(
+    Scope.default,
     WatchConfig.layer,
-    KoofrClient.layer,
+    KoofrService.layer,
+    ActivitiesOf.layer,
+    Webhooks.layer,
     Client.default
   )

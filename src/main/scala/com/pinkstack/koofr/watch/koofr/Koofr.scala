@@ -11,15 +11,23 @@ enum ActivityType:
   case FileMoved
   case FileDeleted
   case FileUploaded
+  case FileRenamed
   case LinkCreated
+  case MountUserAdded
+  case MountUserRemoved
+  case FileDirCreated
 
 object ActivityType:
   given activityTypeDecoder: Decoder[ActivityType] = Decoder.decodeString.emap:
-    case "file_moved"    => Right(FileMoved)
-    case "file_deleted"  => Right(FileDeleted)
-    case "file_uploaded" => Right(FileUploaded)
-    case "link_created"  => Right(LinkCreated)
-    case other           => Left(s"Unknown activity type: $other")
+    case "file_moved"         => Right(FileMoved)
+    case "file_deleted"       => Right(FileDeleted)
+    case "file_uploaded"      => Right(FileUploaded)
+    case "link_created"       => Right(LinkCreated)
+    case "file_renamed"       => Right(FileRenamed)
+    case "file_dir_created"   => Right(FileDirCreated)
+    case "mount_user_added"   => Right(MountUserAdded)
+    case "mount_user_removed" => Right(MountUserRemoved)
+    case other                => Left(s"Unknown activity type: $other")
 
 final case class User(
   id: UUID,
@@ -40,16 +48,23 @@ object Koofr:
     `type`: ActivityType,
     id: String,
     timestamp: Timestamp,
-    mountName: String,
     mountId: UUID,
+    mountName: String,
     user_agent: String,
     newPath: Option[String],
     newMountId: Option[UUID],
     newMountName: Option[String],
     user: User,
     path: Option[String],
-    linkId: Option[UUID]
-  )
+    linkId: Option[UUID],
+    mountUserId: Option[UUID],
+    mountUserName: Option[String]
+  ):
+    override def equals(obj: Any): Boolean = obj match
+      case that: Activity => this.id == that.id
+      case _              => false
+
+    override def hashCode(): Int = id.hashCode
 
   type Activities = List[Activity]
   // type Activities = List[Json] // Use for debugging.
