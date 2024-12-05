@@ -1,4 +1,4 @@
-# koofr-watch
+# koofr-watch [![build status](https://github.com/otobrglez/koofr-watch/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/otobrglez/koofr-watch/actions/workflows/build.yml)
 
 [koofr-watch][koofr-watch] observes your [Koofr](https://koofr.eu/) storage/activities and emits changes to webhooks
 making the integration with other services and processes a breeze!
@@ -32,9 +32,13 @@ export WEBHOOK_URL_3=https://discord.com/api/webhooks/768..... # Five of them ar
 sbt run
 ```
 
-## Author
+## Stay In Touch
 
-\- [Oto Brglez](https://github.com/otobrglez)
+- [Oto Brglez](https://github.com/otobrglez)
+
+## License
+
+[MIT](https://opensource.org/licenses/MIT)
 
 [koofr-watch]: https://github.com/otobrglez/koofr-watch
 
