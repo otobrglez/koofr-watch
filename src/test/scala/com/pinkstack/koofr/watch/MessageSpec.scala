@@ -85,20 +85,25 @@ object MessageSpec extends ZIOSpecDefault:
 
   def spec =
     suite("Message") {
-      test("it works") {
+      test("gets grouped") {
+        val zio = for
+          queue         <- Queue.unbounded[Option[Message]]
+          fakeWebhooks   = new Webhooks:
+                             def sendMessage(message: Message) = queue.offer(Some(message)).unit;
+          _             <- ZStream
+                             .fromIterable(activitiesSample(10) ++ activitiesSample(10))
+                             .via(fakeWebhooks.pipeline(chunkSize = Some(5), maxLength = Some(500)))
+                             .runCollect *> queue.offer(None)
+          messageGroups <-
+            ZStream
+              .fromQueue(queue)
+              .takeWhile(_.isDefined)
+              .collect { case Some(v) => v }
+              .runCollect
+              .map(_.toList)
+          _              = messageGroups.foreach(message => println(message))
+        yield messageGroups
 
-        val fakeWebhooks = new Webhooks:
-          override def sendMessage(message: Message): ZIO[Scope, Throwable, Unit] = Console.print(s"GOT: \n${message}")
-
-        val stream =
-          ZStream
-            .fromIterable(activitiesSample(10) ++ activitiesSample(10))
-            .via(fakeWebhooks.pipeline2(chunkSize = Some(5), maxLength = Some(500)))
-            .runCollect
-
-        assertZIO(stream)(
-          Assertion.assertion("what")(_ => 1 == 1)
-        )
-        // assertTrue(true)
+        assertZIO(zio)(Assertion.assertion("groups")(messageGroups => messageGroups.length > 1))
       }
     }
