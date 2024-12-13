@@ -7,19 +7,9 @@ val scala3Version = "3.6.1"
 
 Global / onChangedBuildSource := ReloadOnSourceChanges
 
-lazy val envPort: String = Option(getenv("PORT")).getOrElse("4443")
-lazy val koofrUsername   = Try(getenv("KOOFR_USERNAME")).get
-lazy val koofrPassword   = Try(getenv("KOOFR_PASSWORD")).get
-
-lazy val serverArgs: Seq[String] = Seq(
-  s"server",
-  "--port",
-  envPort,
-  "--koofrUsername",
-  koofrUsername,
-  "--koofrPassword",
-  koofrPassword
-)
+lazy val envPort: Int  = Option(System.getenv("PORT")).flatMap(p => Try(Integer.parseInt(p)).toOption).getOrElse(4447)
+lazy val koofrUsername = Try(getenv("KOOFR_USERNAME")).get
+lazy val koofrPassword = Try(getenv("KOOFR_PASSWORD")).get
 
 lazy val root = project
   .enablePlugins(JavaAppPackaging, DockerPlugin)
@@ -46,7 +36,6 @@ lazy val root = project
     Compile / mainClass              := Some("com.pinkstack.koofr.watch.Main"),
     assembly / mainClass             := Some("com.pinkstack.koofr.watch.Main"),
     reStart / mainClass              := Some("com.pinkstack.koofr.watch.Main"),
-    reStartArgs                      := serverArgs,
     assembly / assemblyJarName       := "koofr-watch.jar",
     assembly / assemblyMergeStrategy := {
       case PathList("module-info.class")                        =>
@@ -65,7 +54,7 @@ lazy val root = project
   )
   .settings(
     Compile / discoveredMainClasses := Seq(),
-    dockerExposedPorts              := Seq(5445),
+    dockerExposedPorts              := Seq(envPort),
     dockerExposedUdpPorts           := Seq.empty[Int],
     dockerUsername                  := Some("otobrglez"),
     dockerUpdateLatest              := true,
@@ -78,10 +67,11 @@ lazy val root = project
           Cmd("LABEL", "maintainer Oto Brglez <otobrglez@gmail.com>"),
           Cmd("LABEL", "org.opencontainers.image.url https://github.com/otobrglez/koofr-watch"),
           Cmd("LABEL", "org.opencontainers.image.source https://github.com/otobrglez/koofr-watch"),
-          Cmd("RUN", "apk add --no-cache bash"),
+          Cmd("RUN", "apk add --no-cache bash curl"),
           Cmd("ENV", "SBT_VERSION", sbtVersion.value),
           Cmd("ENV", "SCALA_VERSION", scalaVersion.value),
           Cmd("ENV", "KOOFR_WATCH_VERSION", version.value),
+          Cmd("ENV", "PORT", envPort.toString),
           add
         )
       case other                                              => List(other)

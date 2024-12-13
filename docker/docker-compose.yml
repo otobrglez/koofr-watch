@@ -1,0 +1,13 @@
+services:
+  koofr-watch:
+    image: ghcr.io/otobrglez/koofr-watch
+    container_name: koofr-watch
+
+    environment:
+      - KOOFR_USERNAME=$KOOFR_USERNAME
+      - KOOFR_PASSWORD=$KOOFR_PASSWORD
+      - WEBHOOK_URL_1=$WEBHOOK_URL_1
+    #healthcheck:
+    #  test: [ "CMD-SHELL", "curl -f http://localhost:$PORT/ || exit 1" ]
+    #  interval: 10s
+    #  retries: 10

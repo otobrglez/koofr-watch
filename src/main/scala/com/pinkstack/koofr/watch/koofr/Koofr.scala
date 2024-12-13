@@ -7,24 +7,32 @@ import java.time.{Instant, ZoneId, ZoneOffset, ZonedDateTime}
 import java.util.UUID
 import scala.util.Try
 
-enum ActivityType:
+enum ActivityType(
+  val kind: String,
+  val template: String
+):
+  case FileCopied
+      extends ActivityType("file_copied", "{{user}} copied {{path}} from {{mount}} to {{newPath}} in {{newMount}}.")
+  case FileDeleted    extends ActivityType("file_deleted", "{{user}} removed {{path}} from {{mount}}.")
+  case FileDirCreated extends ActivityType("file_dir_created", "{{user}} created a folder {{path}} in {{mount}}.")
   case FileMoved
-  case FileDeleted
-  case FileUploaded
-  case FileRenamed
-  case LinkCreated
-  case MountUserAdded
+      extends ActivityType("file_moved", "{{user}} moved {{path}} from {{mount}} to {{newPath}} in {{newMount}}.")
+  case FileRenamed    extends ActivityType("file_renamed", "{{user}} renamed {{path}} in {{mount}} to {{newPath}}.")
+  case FileUploaded   extends ActivityType("file_uploaded", "{{user}} uploaded {{path}} to {{mount}}.")
+  case LinkCreated    extends ActivityType("link_created", "{{user}} created {{linkStart}}a download link{{linkEnd}}.")
+  case MountUserAdded extends ActivityType("mount_user_added", "{{user}} added user {{mountUser}} to {{mount}}.")
   case MountUserRemoved
-  case FileDirCreated
+      extends ActivityType("mount_user_removed", "{{user}} removed user {{mountUser}} from {{mount}}.")
 
 object ActivityType:
   given activityTypeDecoder: Decoder[ActivityType] = Decoder.decodeString.emap:
-    case "file_moved"         => Right(FileMoved)
+    case "file_copied"        => Right(FileCopied)
     case "file_deleted"       => Right(FileDeleted)
+    case "file_dir_created"   => Right(FileDirCreated)
+    case "file_moved"         => Right(FileMoved)
+    case "file_renamed"       => Right(FileRenamed)
     case "file_uploaded"      => Right(FileUploaded)
     case "link_created"       => Right(LinkCreated)
-    case "file_renamed"       => Right(FileRenamed)
-    case "file_dir_created"   => Right(FileDirCreated)
     case "mount_user_added"   => Right(MountUserAdded)
     case "mount_user_removed" => Right(MountUserRemoved)
     case other                => Left(s"Unknown activity type: $other")

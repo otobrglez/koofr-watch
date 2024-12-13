@@ -20,6 +20,7 @@ object Dependencies {
     val zio: Version           = "2.1.13"
     val zioLogging: Version    = "2.3.2"
     val zioConfig: Version     = "4.0.2"
+    val zioMetrics: Version    = "2.3.1"
     val refined: Version       = "0.11.2"
   }
 
@@ -29,7 +30,8 @@ object Dependencies {
   ).map(_ % Versions.zio) ++ Seq(
     "dev.zio" %% "zio-test",
     "dev.zio" %% "zio-test-sbt",
-    "dev.zio" %% "zio-test-magnolia"
+    "dev.zio" %% "zio-test-magnolia",
+    "dev.zio" %% "zio-test-scalacheck"
   ).map(_ % Versions.zio % Test) ++ Seq(
     "dev.zio" %% "zio-json"         % "0.7.3",
     "dev.zio" %% "zio-http"         % "3.0.1",
@@ -42,7 +44,10 @@ object Dependencies {
     "dev.zio" %% "zio-config-magnolia",
     "dev.zio" %% "zio-config-typesafe",
     "dev.zio" %% "zio-config-refined"
-  ).map(_ % Versions.zioConfig)
+  ).map(_ % Versions.zioConfig) ++ Seq(
+    "dev.zio" %% "zio-metrics-connectors",
+    "dev.zio" %% "zio-metrics-connectors-prometheus"
+  ).map(_ % Versions.zioMetrics)
 
   lazy val logging: Modules = Seq(
     "dev.zio" %% "zio-logging",
@@ -61,10 +66,6 @@ object Dependencies {
     "io.circe" %% "circe-generic",
     "io.circe" %% "circe-parser"
   ).map(_ % Versions.circe)
-
-  lazy val quartz: Modules = Seq(
-    "org.quartz-scheduler" % "quartz"
-  ).map(_ % Versions.quartz)
 
   lazy val projectResolvers: Seq[MavenRepository] = Seq(
     "Sonatype releases" at "https://oss.sonatype.org/content/repositories/releases",
