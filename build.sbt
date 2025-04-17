@@ -3,7 +3,7 @@ import com.typesafe.sbt.packager.docker.Cmd
 import System.getenv
 import scala.util.Try
 
-val scala3Version = "3.6.1"
+val scala3Version = "3.6.4"
 
 Global / onChangedBuildSource := ReloadOnSourceChanges
 
@@ -16,7 +16,6 @@ lazy val root = project
   .in(file("."))
   .settings(
     name         := "KoofrWatch",
-    version      := "0.0.1",
     scalaVersion := scala3Version,
     scalacOptions ++= Seq(
       "-encoding",
@@ -79,3 +78,5 @@ lazy val root = project
   )
 
 resolvers ++= Dependencies.projectResolvers
+
+addCommandAlias("fmt", ";scalafmtAll;scalafmtSbt")

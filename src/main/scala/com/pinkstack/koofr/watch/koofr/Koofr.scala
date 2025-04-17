@@ -1,9 +1,9 @@
 package com.pinkstack.koofr.watch.koofr
 
-import io.circe.{Decoder, Json}
+import io.circe.Decoder
 import io.circe.generic.semiauto.deriveDecoder
 
-import java.time.{Instant, ZoneId, ZoneOffset, ZonedDateTime}
+import java.time.{Instant, ZoneOffset, ZonedDateTime}
 import java.util.UUID
 import scala.util.Try
 
@@ -75,7 +75,6 @@ object Koofr:
     override def hashCode(): Int = id.hashCode
 
   type Activities = List[Activity]
-  // type Activities = List[Json] // Use for debugging.
 
   given activityDecoder: Decoder[Activity] = deriveDecoder[Activity]
 

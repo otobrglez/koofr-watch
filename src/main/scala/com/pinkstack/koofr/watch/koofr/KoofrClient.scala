@@ -1,13 +1,12 @@
 package com.pinkstack.koofr.watch.koofr
 
-import cats.instances.unit
 import com.pinkstack.koofr.watch.WatchConfig
+import eu.timepit.refined.auto.autoUnwrap
 import io.circe.parser.parse as jsonParse
 import io.circe.{Decoder, Json}
 import zio.*
 import zio.http.*
 import zio.http.Header.{Accept, ContentType}
-import eu.timepit.refined.auto.autoUnwrap
 import zio.metrics.Metric
 import zio.metrics.MetricKeyType.Histogram
 

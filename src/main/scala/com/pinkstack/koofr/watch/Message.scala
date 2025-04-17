@@ -1,7 +1,7 @@
 package com.pinkstack.koofr.watch
 
-import com.pinkstack.koofr.watch.koofr.{ActivityType, User}
 import com.pinkstack.koofr.watch.koofr.Koofr.Activity
+import com.pinkstack.koofr.watch.koofr.User
 import zio.Chunk
 
 type Message = String

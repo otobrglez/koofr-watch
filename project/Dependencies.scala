@@ -5,23 +5,11 @@ object Dependencies {
   type Modules = Seq[ModuleID]
 
   object Versions {
-    val http4s: Version        = "1.0.0-M40"
-    val fs2: Version           = "3.11.0"
-    val decline: Version       = "2.4.1"
-    val log4cats: Version      = "2.7.0"
-    val scalaTest: Version     = "3.2.19"
-    val doobie: Version        = "1.0.0-RC5"
-    val sentryLogback: Version = "7.18.1"
-    val ical4j: Version        = "4.0.3"
-    val quartz: Version        = "2.3.2"
-    val circe: Version         = "0.15.0-M1"
-    val flyway: Version        = "10.17.3"
-    val postgresql: Version    = "42.7.4"
-    val zio: Version           = "2.1.13"
-    val zioLogging: Version    = "2.3.2"
-    val zioConfig: Version     = "4.0.2"
-    val zioMetrics: Version    = "2.3.1"
-    val refined: Version       = "0.11.2"
+    val circe: Version      = "0.14.12"
+    val zio: Version        = "2.1.17"
+    val zioConfig: Version  = "4.0.4"
+    val zioMetrics: Version = "2.3.1"
+    val refined: Version    = "0.11.3"
   }
 
   lazy val zio: Modules = Seq(
@@ -33,12 +21,12 @@ object Dependencies {
     "dev.zio" %% "zio-test-magnolia",
     "dev.zio" %% "zio-test-scalacheck"
   ).map(_ % Versions.zio % Test) ++ Seq(
-    "dev.zio" %% "zio-json"         % "0.7.3",
-    "dev.zio" %% "zio-http"         % "3.0.1",
-    "dev.zio" %% "zio-logging"      % "2.4.0",
-    "dev.zio" %% "zio-prelude"      % "1.0.0-RC35",
-    "dev.zio" %% "zio-interop-cats" % "23.1.0.3",
-    "dev.zio" %% "zio-cli"          % "0.6.0+66-5b509020-SNAPSHOT"
+    "dev.zio" %% "zio-json"         % "0.7.42",
+    "dev.zio" %% "zio-http"         % "3.2.0",
+    "dev.zio" %% "zio-logging"      % "2.5.0",
+    "dev.zio" %% "zio-prelude"      % "1.0.0-RC39",
+    "dev.zio" %% "zio-interop-cats" % "23.1.0.5",
+    "dev.zio" %% "zio-cli"          % "0.7.1"
   ) ++ Seq(
     "dev.zio" %% "zio-config",
     "dev.zio" %% "zio-config-magnolia",
@@ -50,10 +38,9 @@ object Dependencies {
   ).map(_ % Versions.zioMetrics)
 
   lazy val logging: Modules = Seq(
-    "dev.zio" %% "zio-logging",
-    "dev.zio" %% "zio-logging-slf4j2"
-  ).map(_ % Versions.zioLogging) ++ Seq(
-    "ch.qos.logback" % "logback-classic" % "1.5.12"
+    "dev.zio"       %% "zio-logging"        % "2.5.0",
+    "dev.zio"       %% "zio-logging-slf4j2" % "2.5.0",
+    "ch.qos.logback" % "logback-classic"    % "1.5.18"
   )
 
   lazy val refined: Modules = Seq(

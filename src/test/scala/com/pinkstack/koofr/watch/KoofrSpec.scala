@@ -1,19 +1,16 @@
 package com.pinkstack.koofr.watch
 
-import com.pinkstack.koofr.watch.koofr.ActivityType.MountUserAdded
-import com.pinkstack.koofr.watch.koofr.Koofr.{Activities, Activity}
-import com.pinkstack.koofr.watch.koofr.{ActivityType, KoofrService, User}
+import com.pinkstack.koofr.watch.koofr.Koofr.Activity
+import com.pinkstack.koofr.watch.koofr.{ActivityType, User}
+import org.scalacheck.Gen
 import zio.*
+import zio.stream.ZStream
 import zio.test.*
-import zio.test.Assertion.equalTo
-import org.scalacheck.{Arbitrary, Gen}
 
-import java.time.{LocalDateTime, ZoneOffset, ZonedDateTime}
+import java.time.{LocalDateTime, ZoneOffset}
 import java.util
 import java.util.UUID
 import scala.jdk.CollectionConverters.*
-import zio.Console.printLine
-import zio.stream.ZStream
 
 object KoofrSpec extends ZIOSpecDefault:
 
@@ -88,8 +85,9 @@ object KoofrSpec extends ZIOSpecDefault:
       test("gets grouped") {
         val zio = for
           queue         <- Queue.unbounded[Option[Message]]
-          fakeWebhooks   = new Webhooks:
-                             def sendMessage(message: Message) = queue.offer(Some(message)).unit;
+          fakeWebhooks   =
+            new Webhooks:
+              def sendMessage(message: Message) = queue.offer(Some(message)).unit;
           _             <- ZStream
                              .fromIterable(activitiesSample(10) ++ activitiesSample(10))
                              .via(fakeWebhooks.pipeline(chunkSize = Some(5), maxLength = Some(500)))
